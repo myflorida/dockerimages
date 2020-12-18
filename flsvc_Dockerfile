@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+WORKDIR /app
+EXPOSE 443
+EXPOSE 80
+
+# ASP.NET 3.0 runs on Debian 10.0, It requires to prepare the Python and PyTorch
+RUN apt-get update \
+        && apt-get install -y python3-pip python3-dev \
+		&& python3 -m pip install --upgrade pip \
+        && ln -s /usr/bin/python3 /usr/bin/python \
+        && ln -s /usr/bin/pip3 /usr/bin/pip   \
+        && pip install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html

@@ -3,10 +3,12 @@ WORKDIR /app
 EXPOSE 443
 EXPOSE 80
 
-# ASP.NET 3.0 runs on Debian 10.0, It requires to prepare the Python and PyTorch
+# ASP.NET 3.0 runs on Debian 10.0, It requires to prepare the Python
+# and tensorflow environment explicitly. 
 RUN apt-get update \
         && apt-get install -y python3-pip python3-dev \
-		&& python3 -m pip install --upgrade pip \
+	&& python3 -m pip install --upgrade pip \
+        && pip3 install --force-reinstall tensorflow==1.15.0 \
+        && pip3 install torch==1.7.1+cpu torchvision==0.8.2+cpu -f https://download.pytorch.org/whl/torch_stable.html \
         && ln -s /usr/bin/python3 /usr/bin/python \
-        && ln -s /usr/bin/pip3 /usr/bin/pip   \
-        && pip install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+        && ln -s /usr/bin/pip3 /usr/bin/pip
